@@ -4,13 +4,11 @@ import (
 	"fmt"
 	"net/http"
 
-	librouter "github.com/comame/router-go"
+	router "github.com/comame/router-go"
 )
 
 func Example() {
-	router := new(librouter.Router)
-
-	router.GetDyn("/users/:userId", func(w http.ResponseWriter, r *http.Request, p librouter.Param) {
+	router.GetDyn("/users/:userId", func(w http.ResponseWriter, r *http.Request, p router.Param) {
 		fmt.Fprintln(w, "users/"+p["userId"])
 	})
 

@@ -17,115 +17,117 @@ type Router struct {
 	methodFilters []string
 }
 
-func (r *Router) All(pattern string, f handler) {
+var router Router
+
+func All(pattern string, f handler) {
 	def := parseDef(pattern)
-	r.rawPatterns = append(r.rawPatterns, pattern)
-	r.defs = append(r.defs, def)
-	r.handlers = append(r.handlers, f)
-	r.paramHandlers = append(r.paramHandlers, nil)
-	r.methodFilters = append(r.methodFilters, "")
+	router.rawPatterns = append(router.rawPatterns, pattern)
+	router.defs = append(router.defs, def)
+	router.handlers = append(router.handlers, f)
+	router.paramHandlers = append(router.paramHandlers, nil)
+	router.methodFilters = append(router.methodFilters, "")
 }
 
-func (r *Router) AllDyn(pattern string, f handlerWithParam) {
+func AllDyn(pattern string, f handlerWithParam) {
 	def := parseDef(pattern)
-	r.rawPatterns = append(r.rawPatterns, pattern)
-	r.defs = append(r.defs, def)
-	r.handlers = append(r.handlers, nil)
-	r.paramHandlers = append(r.paramHandlers, f)
-	r.methodFilters = append(r.methodFilters, "")
+	router.rawPatterns = append(router.rawPatterns, pattern)
+	router.defs = append(router.defs, def)
+	router.handlers = append(router.handlers, nil)
+	router.paramHandlers = append(router.paramHandlers, f)
+	router.methodFilters = append(router.methodFilters, "")
 }
 
-func (r *Router) Get(pattern string, f handler) {
+func Get(pattern string, f handler) {
 	def := parseDef(pattern)
-	r.rawPatterns = append(r.rawPatterns, pattern)
-	r.defs = append(r.defs, def)
-	r.handlers = append(r.handlers, f)
-	r.paramHandlers = append(r.paramHandlers, nil)
-	r.methodFilters = append(r.methodFilters, http.MethodGet)
+	router.rawPatterns = append(router.rawPatterns, pattern)
+	router.defs = append(router.defs, def)
+	router.handlers = append(router.handlers, f)
+	router.paramHandlers = append(router.paramHandlers, nil)
+	router.methodFilters = append(router.methodFilters, http.MethodGet)
 }
 
-func (r *Router) GetDyn(pattern string, f handlerWithParam) {
+func GetDyn(pattern string, f handlerWithParam) {
 	def := parseDef(pattern)
-	r.rawPatterns = append(r.rawPatterns, pattern)
-	r.defs = append(r.defs, def)
-	r.handlers = append(r.handlers, nil)
-	r.paramHandlers = append(r.paramHandlers, f)
-	r.methodFilters = append(r.methodFilters, http.MethodGet)
+	router.rawPatterns = append(router.rawPatterns, pattern)
+	router.defs = append(router.defs, def)
+	router.handlers = append(router.handlers, nil)
+	router.paramHandlers = append(router.paramHandlers, f)
+	router.methodFilters = append(router.methodFilters, http.MethodGet)
 }
 
-func (r *Router) Post(pattern string, f handler) {
+func Post(pattern string, f handler) {
 	def := parseDef(pattern)
-	r.rawPatterns = append(r.rawPatterns, pattern)
-	r.defs = append(r.defs, def)
-	r.handlers = append(r.handlers, f)
-	r.paramHandlers = append(r.paramHandlers, nil)
-	r.methodFilters = append(r.methodFilters, http.MethodPost)
+	router.rawPatterns = append(router.rawPatterns, pattern)
+	router.defs = append(router.defs, def)
+	router.handlers = append(router.handlers, f)
+	router.paramHandlers = append(router.paramHandlers, nil)
+	router.methodFilters = append(router.methodFilters, http.MethodPost)
 }
 
-func (r *Router) PostDyn(pattern string, f handlerWithParam) {
+func PostDyn(pattern string, f handlerWithParam) {
 	def := parseDef(pattern)
-	r.rawPatterns = append(r.rawPatterns, pattern)
-	r.defs = append(r.defs, def)
-	r.handlers = append(r.handlers, nil)
-	r.paramHandlers = append(r.paramHandlers, f)
-	r.methodFilters = append(r.methodFilters, http.MethodPost)
+	router.rawPatterns = append(router.rawPatterns, pattern)
+	router.defs = append(router.defs, def)
+	router.handlers = append(router.handlers, nil)
+	router.paramHandlers = append(router.paramHandlers, f)
+	router.methodFilters = append(router.methodFilters, http.MethodPost)
 }
 
-func (r *Router) Patch(pattern string, f handler) {
+func Patch(pattern string, f handler) {
 	def := parseDef(pattern)
-	r.rawPatterns = append(r.rawPatterns, pattern)
-	r.defs = append(r.defs, def)
-	r.handlers = append(r.handlers, f)
-	r.paramHandlers = append(r.paramHandlers, nil)
-	r.methodFilters = append(r.methodFilters, http.MethodPatch)
+	router.rawPatterns = append(router.rawPatterns, pattern)
+	router.defs = append(router.defs, def)
+	router.handlers = append(router.handlers, f)
+	router.paramHandlers = append(router.paramHandlers, nil)
+	router.methodFilters = append(router.methodFilters, http.MethodPatch)
 }
 
-func (r *Router) PatchDyn(pattern string, f handlerWithParam) {
+func PatchDyn(pattern string, f handlerWithParam) {
 	def := parseDef(pattern)
-	r.rawPatterns = append(r.rawPatterns, pattern)
-	r.defs = append(r.defs, def)
-	r.handlers = append(r.handlers, nil)
-	r.paramHandlers = append(r.paramHandlers, f)
-	r.methodFilters = append(r.methodFilters, http.MethodPatch)
+	router.rawPatterns = append(router.rawPatterns, pattern)
+	router.defs = append(router.defs, def)
+	router.handlers = append(router.handlers, nil)
+	router.paramHandlers = append(router.paramHandlers, f)
+	router.methodFilters = append(router.methodFilters, http.MethodPatch)
 }
 
-func (r *Router) Delete(pattern string, f handler) {
+func Delete(pattern string, f handler) {
 	def := parseDef(pattern)
-	r.rawPatterns = append(r.rawPatterns, pattern)
-	r.defs = append(r.defs, def)
-	r.handlers = append(r.handlers, f)
-	r.paramHandlers = append(r.paramHandlers, nil)
-	r.methodFilters = append(r.methodFilters, http.MethodDelete)
+	router.rawPatterns = append(router.rawPatterns, pattern)
+	router.defs = append(router.defs, def)
+	router.handlers = append(router.handlers, f)
+	router.paramHandlers = append(router.paramHandlers, nil)
+	router.methodFilters = append(router.methodFilters, http.MethodDelete)
 }
 
-func (r *Router) DeleteDyn(pattern string, f handlerWithParam) {
+func DeleteDyn(pattern string, f handlerWithParam) {
 	def := parseDef(pattern)
-	r.rawPatterns = append(r.rawPatterns, pattern)
-	r.defs = append(r.defs, def)
-	r.handlers = append(r.handlers, nil)
-	r.paramHandlers = append(r.paramHandlers, f)
-	r.methodFilters = append(r.methodFilters, http.MethodDelete)
+	router.rawPatterns = append(router.rawPatterns, pattern)
+	router.defs = append(router.defs, def)
+	router.handlers = append(router.handlers, nil)
+	router.paramHandlers = append(router.paramHandlers, f)
+	router.methodFilters = append(router.methodFilters, http.MethodDelete)
 }
 
-func (r *Router) Put(pattern string, f handler) {
+func Put(pattern string, f handler) {
 	def := parseDef(pattern)
-	r.rawPatterns = append(r.rawPatterns, pattern)
-	r.defs = append(r.defs, def)
-	r.handlers = append(r.handlers, f)
-	r.paramHandlers = append(r.paramHandlers, nil)
-	r.methodFilters = append(r.methodFilters, http.MethodPut)
+	router.rawPatterns = append(router.rawPatterns, pattern)
+	router.defs = append(router.defs, def)
+	router.handlers = append(router.handlers, f)
+	router.paramHandlers = append(router.paramHandlers, nil)
+	router.methodFilters = append(router.methodFilters, http.MethodPut)
 }
 
-func (r *Router) PutDyn(pattern string, f handlerWithParam) {
+func PutDyn(pattern string, f handlerWithParam) {
 	def := parseDef(pattern)
-	r.rawPatterns = append(r.rawPatterns, pattern)
-	r.defs = append(r.defs, def)
-	r.handlers = append(r.handlers, nil)
-	r.paramHandlers = append(r.paramHandlers, f)
-	r.methodFilters = append(r.methodFilters, http.MethodPut)
+	router.rawPatterns = append(router.rawPatterns, pattern)
+	router.defs = append(router.defs, def)
+	router.handlers = append(router.handlers, nil)
+	router.paramHandlers = append(router.paramHandlers, f)
+	router.methodFilters = append(router.methodFilters, http.MethodPut)
 }
 
-func (router *Router) Route(w http.ResponseWriter, r *http.Request) {
+func Route(w http.ResponseWriter, r *http.Request) {
 	pathstr := r.URL.Path
 	for i, v := range router.defs {
 		if matches(pathstr, v) && (router.methodFilters[i] == "" || r.Method == router.methodFilters[i]) {
@@ -146,9 +148,9 @@ func (router *Router) Route(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(404)
 }
 
-func (router *Router) ListenAndServe(addr string) error {
+func ListenAndServe(addr string) error {
 	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-		router.Route(w, req)
+		Route(w, req)
 	})
 	return http.ListenAndServe(addr, nil)
 }
