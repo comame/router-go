@@ -59,7 +59,7 @@ func matches(pathstr string, def routesDef) bool {
 	}
 
 	for i, v := range def.Routes {
-		if v.kind == staticRoute && paths[i] != v.staticName {
+		if (v.kind == staticRoute) && (paths[i] != v.staticName) {
 			return false
 		}
 		continue

@@ -1,31 +1,3 @@
 Simple routing library for go.
 
-## Usage
-
-```go
-// router_test.go
-
-import (
-	"fmt"
-	"net/http"
-
-	router "github.com/comame/router-go"
-)
-
-func Example() {
-	router.GetDyn("/users/:userId", func(w http.ResponseWriter, r *http.Request, p router.Param) {
-		fmt.Fprintln(w, "users/"+p["userId"])
-	})
-
-	router.Get("/*", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, "Hello, world!")
-	})
-
-	router.Post("/api/*", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, "Hello from API")
-	})
-
-	router.ListenAndServe(":8080")
-}
-
-```
+See <https://pkg.go.dev/github.com/comame/router-go>
