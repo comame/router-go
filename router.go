@@ -7,18 +7,16 @@ import (
 
 type routerContextKey string
 
-type Handler func(w http.ResponseWriter, r *http.Request)
-
 type Router struct {
 	rawPatterns   []string
 	defs          []routesDef
-	handlers      []Handler
+	handlers      []http.HandlerFunc
 	methodFilters []string
 }
 
 var router Router
 
-func All(pattern string, f Handler) {
+func All(pattern string, f http.HandlerFunc) {
 	def := parseDef(pattern)
 	router.rawPatterns = append(router.rawPatterns, pattern)
 	router.defs = append(router.defs, def)
@@ -26,7 +24,7 @@ func All(pattern string, f Handler) {
 	router.methodFilters = append(router.methodFilters, "")
 }
 
-func Get(pattern string, f Handler) {
+func Get(pattern string, f http.HandlerFunc) {
 	def := parseDef(pattern)
 	router.rawPatterns = append(router.rawPatterns, pattern)
 	router.defs = append(router.defs, def)
@@ -34,7 +32,7 @@ func Get(pattern string, f Handler) {
 	router.methodFilters = append(router.methodFilters, http.MethodGet)
 }
 
-func Post(pattern string, f Handler) {
+func Post(pattern string, f http.HandlerFunc) {
 	def := parseDef(pattern)
 	router.rawPatterns = append(router.rawPatterns, pattern)
 	router.defs = append(router.defs, def)
@@ -42,7 +40,7 @@ func Post(pattern string, f Handler) {
 	router.methodFilters = append(router.methodFilters, http.MethodPost)
 }
 
-func Patch(pattern string, f Handler) {
+func Patch(pattern string, f http.HandlerFunc) {
 	def := parseDef(pattern)
 	router.rawPatterns = append(router.rawPatterns, pattern)
 	router.defs = append(router.defs, def)
@@ -50,7 +48,7 @@ func Patch(pattern string, f Handler) {
 	router.methodFilters = append(router.methodFilters, http.MethodPatch)
 }
 
-func Delete(pattern string, f Handler) {
+func Delete(pattern string, f http.HandlerFunc) {
 	def := parseDef(pattern)
 	router.rawPatterns = append(router.rawPatterns, pattern)
 	router.defs = append(router.defs, def)
@@ -58,7 +56,7 @@ func Delete(pattern string, f Handler) {
 	router.methodFilters = append(router.methodFilters, http.MethodDelete)
 }
 
-func Put(pattern string, f Handler) {
+func Put(pattern string, f http.HandlerFunc) {
 	def := parseDef(pattern)
 	router.rawPatterns = append(router.rawPatterns, pattern)
 	router.defs = append(router.defs, def)
@@ -73,7 +71,15 @@ func Params(r *http.Request) map[string]string {
 	return extractDynamicRoutes(pathstr, def)
 }
 
-func Route(w http.ResponseWriter, r *http.Request) {
+func Handler() http.Handler {
+	return router
+}
+
+func (router Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	route(w, r)
+}
+
+func route(w http.ResponseWriter, r *http.Request) {
 	pathstr := r.URL.Path
 	for i, def := range router.defs {
 		if matches(pathstr, def) && (router.methodFilters[i] == "" || r.Method == router.methodFilters[i]) {
@@ -86,11 +92,4 @@ func Route(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(404)
-}
-
-func ListenAndServe(addr string) error {
-	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-		Route(w, req)
-	})
-	return http.ListenAndServe(addr, nil)
 }

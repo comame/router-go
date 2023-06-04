@@ -24,7 +24,8 @@ func Example() {
 		fmt.Fprint(w, "Hello from API")
 	})
 
-	router.ListenAndServe(":8080")
+	http.Handle("/", router.Handler())
+	http.ListenAndServe(":8080", nil)
 }
 
 func ExampleGet() {
@@ -37,25 +38,6 @@ func ExampleGet() {
 	// matches /foo/bar, /foo/bar/baz, /foo/bar/baz/foo
 	router.Get("/foo/bar/*", handler)
 	router.Get("/*", handler)
-}
-
-func ExampleRoute() {
-	router.Get("/*", func(w http.ResponseWriter, r *http.Request) {
-		io.WriteString(w, "Hello, world!")
-	})
-
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		router.Route(w, r)
-	})
-	http.ListenAndServe(":8080", nil)
-}
-
-func ExampleListenAndServe() {
-	router.Get("/*", func(w http.ResponseWriter, r *http.Request) {
-		io.WriteString(w, "Hello, world!")
-	})
-
-	router.ListenAndServe(":8080")
 }
 
 func TestAll(t *testing.T) {
@@ -72,7 +54,7 @@ func TestAll(t *testing.T) {
 		io.WriteString(w, "ng\n")
 	})
 
-	router.Route(w, r)
+	router.Handler().ServeHTTP(w, r)
 
 	if got := w.Body.String(); got != "ok\n" {
 		t.Errorf("want %s, got %s\n", "ok", got)
@@ -93,7 +75,7 @@ func TestGet(t *testing.T) {
 		io.WriteString(w, "ngAll\n")
 	})
 
-	router.Route(w, r)
+	router.Handler().ServeHTTP(w, r)
 
 	if got := w.Body.String(); got != "ok\n" {
 		t.Errorf("want %s, got %s\n", "ok", got)
@@ -109,7 +91,7 @@ func TestParams(t *testing.T) {
 		io.WriteString(w, p["user_id"]+"\n")
 	})
 
-	router.Route(w, r)
+	router.Handler().ServeHTTP(w, r)
 
 	if got := w.Body.String(); got != "1\n" {
 		t.Errorf("want %s, got %s\n", "1", got)
@@ -127,7 +109,7 @@ func TestWildcard(t *testing.T) {
 		io.WriteString(w, "ok\n")
 	})
 
-	router.Route(w, r)
+	router.Handler().ServeHTTP(w, r)
 
 	if got := w.Body.String(); got != "ok\n" {
 		t.Errorf("want %s, got %s\n", "ok", got)
